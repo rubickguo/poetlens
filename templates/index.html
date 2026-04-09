@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>poetlens - Gallery</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&amp;family=Playfair+Display:ital,wght@0,500;0,600;1,500&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script
+        id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#D0BB95", "background-dark": "#0a0a0a", "card-dark": "#121212" }, fontFamily: { display: "Inter", serif: "Playfair Display" }, borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" } } } };</script>
+    <style type="text/tailwindcss">
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+        
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 2rem;
+        }
+        @media (min-width: 768px) {
+            .masonry-grid {
+                column-count: 2; /* Strictly 2 columns */
+            }
+        }
+        
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-dark text-gray-200 font-display min-h-screen flex flex-col overflow-x-hidden antialiased selection:bg-primary/30">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 w-full bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5">
+        <div class="flex flex-col md:flex-row items-center justify-between px-6 py-4 lg:px-12 gap-4">
+            <div class="flex items-center gap-4 group cursor-pointer self-start md:self-auto">
+                <div class="p-2 border border-white/10 rounded-lg group-hover:border-primary/50 transition-colors">
+                    <span class="material-symbols-outlined text-primary text-[24px]">camera</span>
+                </div>
+                <h2 class="text-lg font-serif italic text-white/90 tracking-wide">poetlens</h2>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="flex items-center gap-4 bg-white/5 rounded-full px-4 py-2 border border-white/10">
+                <span class="material-symbols-outlined text-white/40 text-[18px]">filter_list</span>
+                <div class="flex items-center gap-3">
+                    <label for="scoreFilter" class="text-xs font-mono text-white/60 uppercase">Min Score:</label>
+                    <input type="range" id="scoreFilter" min="0" max="100" value="0"
+                        class="w-24 md:w-32 accent-primary h-1 bg-white/10 rounded-lg appearance-none cursor-pointer">
+                    <span id="scoreValue" class="text-xs font-mono text-primary w-8 text-right">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow py-10 px-4 md:px-8 lg:px-16 max-w-[1800px] mx-auto w-full">
+        <div class="masonry-grid" id="galleryGrid">
+            {% for photo in photos %}
+            <article
+                class="masonry-item group bg-card-dark rounded-none overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5"
+                data-score="{{ photo.memory_score }}">
+                <a href="/photo/{{ photo.id }}" class="block preserve-scroll">
+                    <!-- Image -->
+                    <div class="w-full relative overflow-hidden">
+                        <img alt="{{ photo.description }}" loading="lazy"
+                            class="w-full h-auto object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-[1.02] transition-all duration-700 ease-out"
+                            src="/nas_photos/{{ photo.path }}" />
+
+                        <!-- Score Badges (Top Right) -->
+                        <div
+                            class="absolute top-4 right-4 flex flex-col gap-2 opacity-100 transition-opacity duration-300">
+                            <div
+                                class="flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-2 py-1 rounded border border-white/10 shadow-lg">
+                                <span class="text-[9px] font-mono text-green-400">MEM</span>
+                                <span class="text-[10px] font-bold text-white">{{ "%.1f"|format(photo.memory_score)
+                                    }}</span>
+                            </div>
+                            <div
+                                class="flex items-center gap-1.5 bg-black/70 backdrop-blur-md px-2 py-1 rounded border border-white/10 shadow-lg">
+                                <span class="text-[9px] font-mono text-blue-400">AES</span>
+                                <span class="text-[10px] font-bold text-white">{{
+                                    "%.1f"|format(photo.beauty_score_score|default(photo.beauty_score)) }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Content -->
+                    <div class="pt-6 pb-2 px-2 flex flex-col gap-3">
+
+                        <!-- Hero Copy (Title) -->
+                        {% if photo.one_sentence_copy %}
+                        <h3
+                            class="text-white text-2xl md:text-3xl font-serif font-medium leading-tight italic text-left group-hover:text-primary transition-colors duration-300">
+                            “{{ photo.one_sentence_copy }}”
+                        </h3>
+                        {% else %}
+                        <h3 class="text-white/40 text-xl font-serif italic">
+                            analyzing essence...
+                        </h3>
+                        {% endif %}
+
+                        <!-- Full Description (Subtle) -->
+                        <div
+                            class="text-gray-500 text-xs md:text-sm leading-relaxed font-light mt-1 border-l border-white/10 pl-4 group-hover:border-primary/30 transition-colors">
+                            {{ photo.description }}
+                        </div>
+
+                        <!-- Restore Tags -->
+                        {% if photo.type %}
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            {% for tag in photo.type.split(',') %}
+                            <span
+                                class="text-[9px] uppercase tracking-wider text-gray-400 border border-white/10 px-1.5 py-0.5 rounded hover:text-white hover:border-white/30 transition-colors">
+                                {{ tag }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <!-- Footer -->
+                        <div
+                            class="flex items-center justify-between mt-4 pt-4 border-t border-white/5 opacity-40 group-hover:opacity-100 transition-opacity">
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-gray-400">
+                                {{ photo.timestamp }} | {{ photo.exif_datetime }}
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-center items-center gap-4 mt-12 mb-8">
+            {% if page > 1 %}
+            <a href="/?page={{ page - 1 }}"
+                class="px-6 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/30 transition-all text-sm uppercase tracking-wide text-white/80">
+                Previous
+            </a>
+            {% endif %}
+
+            <!-- Jump to Page -->
+            <form action="/" method="get"
+                class="flex items-center gap-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/10">
+                <span class="text-[10px] font-mono text-white/40 uppercase tracking-widest">Page</span>
+                <input type="number" name="page" value="{{ page }}" min="1" max="{{ total_pages }}"
+                    class="w-12 bg-transparent border-b border-white/20 text-center text-xs font-mono text-primary focus:outline-none focus:border-primary transition-colors pb-0.5"
+                    onchange="this.form.submit()">
+                <span class="text-[10px] font-mono text-white/40 uppercase tracking-widest">of {{ total_pages }}</span>
+            </form>
+
+            {% if page < total_pages %} <a href="/?page={{ page + 1 }}"
+                class="px-6 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/30 transition-all text-sm uppercase tracking-wide text-white/80">
+                Next
+                </a>
+                {% endif %}
+        </div>
+    </main>
+
+    <script>
+        // 1. Scroll Position Restoration
+        document.addEventListener("DOMContentLoaded", function () {
+            // Restore scroll
+            const scrollPos = sessionStorage.getItem("galleryScrollPos");
+            if (scrollPos) {
+                window.scrollTo(0, parseInt(scrollPos));
+            }
+
+            // Save scroll on click
+            const links = document.querySelectorAll(".preserve-scroll");
+            links.forEach(link => {
+                link.addEventListener("click", function () {
+                    sessionStorage.setItem("galleryScrollPos", window.scrollY);
+                });
+            });
+
+            // 2. Score Filtering
+            const slider = document.getElementById("scoreFilter");
+            const valDisplay = document.getElementById("scoreValue");
+            const items = document.querySelectorAll(".masonry-item");
+
+            // Restore filter value
+            const savedScore = sessionStorage.getItem("minScoreFilter");
+            if (savedScore) {
+                slider.value = savedScore;
+                valDisplay.innerText = savedScore;
+                filterItems(savedScore);
+            }
+
+            slider.addEventListener("input", (e) => {
+                const minScore = e.target.value;
+                valDisplay.innerText = minScore;
+                filterItems(minScore);
+                sessionStorage.setItem("minScoreFilter", minScore);
+            });
+
+            function filterItems(min) {
+                items.forEach(item => {
+                    const score = parseFloat(item.getAttribute("data-score")) || 0;
+                    if (score < parseFloat(min)) {
+                        item.style.display = "none";
+                    } else {
+                        item.style.display = "block";
+                    }
+                });
+            }
+        });
+    </script>
+
+    <footer
+        class="py-12 text-center text-white/20 text-xs font-mono tracking-widest uppercase border-t border-white/5 bg-[#0a0a0a]">
+        Created with poetlens AI
+    </footer>
+
+</body>
+
+</html>

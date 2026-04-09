@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+.DS_Store
+__MACOSX/
+
+# Static resources
+resources/fonts/
+
+# Sensitive config
+config.py
+
+# Outputs
+output/
+logs/
+tmp/
+
+# Database
+filelist.txt
+*.db
+
+# Logs
+*.log
+app_log.txt
+push_log.txt
+push_log_utf8.txt
+
+# CSV results
+*.csv
+
+# Local model caches
+models/**/.cache/
+# Others
+test/
+old/
+models/
