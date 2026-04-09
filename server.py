@@ -1073,7 +1073,7 @@ def build_simulator_html(sim_rows, selected_img: str = ""):
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>墨水屏渲染效果预览</title>
+  <title>照片页面渲染预览</title>
   <style>
     :root {{
       --bg: #0b0c10;
@@ -1434,7 +1434,7 @@ def build_simulator_html(sim_rows, selected_img: str = ""):
 <body>
   <div class="container">
     <a class="back" href="/review">← 返回 Review</a>
-    <h1>墨水屏渲染效果预览</h1>
+    <h1>照片页面渲染预览</h1>
     <div class="subtitle">
       屏幕尺寸：480 x 800&nbsp;&nbsp;
       <span style="display:inline-flex; gap:6px; vertical-align:middle;">

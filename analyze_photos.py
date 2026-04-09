@@ -337,7 +337,7 @@ def ensure_table(conn: sqlite3.Connection) -> None:
 # 生成一句话文案
 def generate_side_caption(image_path: Path) -> str | None:
     system_prompt = (
-        "你是一位为「电子相框」撰写旁白短句的中文文案助手。\n"
+        "你是一位为「网页照片画廊」撰写旁白短句的中文文案助手。\n"
         "你的目标不是描述画面，而是为画面补上一点“画外之意”。\n\n"
 
         "创作原则：\n"
