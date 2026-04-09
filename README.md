@@ -11,6 +11,16 @@ poetlens 是一个面向 NAS / 本地相册的自托管照片网页项目。
 
 它不是简单的相册文件列表，也不是只按时间顺序堆照片，而是尝试把“存着很多年、很少再打开”的照片，重新变成一个愿意逛、愿意回看的网页。
 
+## Example Views
+
+### Gallery
+
+![poetlens gallery example](docs/images/gallery-example.png)
+
+### Detail Page
+
+![poetlens detail example](docs/images/detail-example.png)
+
 ---
 
 ## 核心能力

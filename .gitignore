@@ -44,3 +44,5 @@ models/**/.cache/
 test/
 old/
 models/
+docs/chrome-profile-*/
+docs/edge-profile/
