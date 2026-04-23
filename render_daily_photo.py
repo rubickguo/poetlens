@@ -7,7 +7,7 @@
 - 按 poetlens 模拟器的布局渲染到 480x800
 - 用 LXGWHeartSerifMN.ttf 把文案 / 日期 / 地点都画到图上
 - 转成四色墨水屏（黑/白/红/黄）图像，并保存为 BIN（1 字节 1 像素，行优先）
-- 同时导出 latest.h 头文件数组，给 ESP32 直接 include
+- 同时导出 latest.h 头文件数组，方便需要离线嵌入的展示端复用
 """
 
 from __future__ import annotations
